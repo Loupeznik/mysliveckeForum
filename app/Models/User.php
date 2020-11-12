@@ -11,6 +11,8 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    //upravit pro fungování s databázkou z návrhu (podle ERDPlus)
+
     /**
      * The attributes that are mass assignable.
      *
@@ -40,4 +42,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $table = 'uzivatel';
+
+    public function response() {
+        return $this->hasMany(Response::class, 'id', 'uzivatel_id');
+    }
+
+    public function post() {
+        return $this->hasMany(Post::class, 'id', 'uzivatel_id');
+    }
 }
