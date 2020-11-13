@@ -11,7 +11,7 @@ class Response extends Model
     protected $table = 'odpoved';
     
     public function user() {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class, 'ID', 'uzivatel_id');
     }
 
     public function post() {

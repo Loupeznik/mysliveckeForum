@@ -11,15 +11,15 @@ class Post extends Model
     protected $table = 'prispevek';
     
     public function user() {
-        return $this->hasOne(User::class, 'id', 'uzivatel_id');
+        return $this->hasOne(User::class, 'ID', 'uzivatel_id');
     }
 
     public function category() {
-        return $this->hasOne(Category::class, 'id', 'kategorie_id');
+        return $this->hasOne(Category::class, 'ID', 'kategorie_id');
     }
     
     public function response() {
-        return $this->hasMany(Response::class, 'id', 'prispevek_id');
+        return $this->hasMany(Response::class, 'prispevek_id', 'ID');
     }
 
 }
