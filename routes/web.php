@@ -19,3 +19,4 @@ Route::get('/', function () {
 
 Route::resource('posts','PostController'); //CRUD pro příspěvky
 Route::resource('account','AccountController'); //CRUD pro uživatelské účty
+Route::get('categories/{category}', 'PostController@categoryList');
