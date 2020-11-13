@@ -16,8 +16,7 @@ class PostController extends Controller
     {
         $category = Category::all();
         $user = User::all();
-        //$responses = Response::where('uzivatel_id', Post::get()); //počet odpovědí k příspěvku  -- VYŘEŠIT JINAK, TOTO JE K PIČI
-        $posts = Post::orderBy('pridano', 'desc')->take(10)->get();
+        $posts = Post::orderBy('pridano', 'desc')->take(10)->withCount('response')->get();
         
         return view('post.index', compact(['posts']));
     }
@@ -32,52 +31,49 @@ class PostController extends Controller
     {
         $this->validateInput($request);
 
-        Issue::create([
-            'Name' => $request->Name,
-            'user_id' => $request->user_id,
-            'types_id' => $request->types_id,
-            'priority_id' => $request->priority_id,
-            'Desc' => $request->Desc
-        ]);
+        Post::create([]); //validace
 
         return redirect('/posts');
     }
 
     public function show(Post $post)
     {
-        return view('post.detail', compact('post'), ['id' => $post->id]); //zjistit k čemu je to 'id'
+        $responses = Response::where('prispevek_id', $post->ID)->get();
+        $user = User::all();
+        $category = Category::where('id', $post->kategorie_id)->get('nazev');
+        return view('post.detail', compact(['post', 'responses', 'user', 'category']));
     }
 
     public function edit(Post $post)
     {
         $categories = Category::all();
-
         return view('post.update', compact(['post','categories']));
     }
 
     public function update(Request $request, Post $post)
     {
-        $issue->update($this->validateInput($request));
-
+        $post->update($this->validateInput($request));
         return redirect('/posts');
     }
 
     public function destroy(Post $post)
     {
-        $issue->delete();
+        $post->delete();
 
         return redirect('/posts');
     }
 
-    public function list() 
+    public function list()
     {
         $posts = Post::get();
 
         return view('post.list', compact('posts'));
     }
 
-    public function categoryList(Category $category) { //get posts by given category
-        $posts = Post::where('kategorie_id', $category->id)->get(); //čekovat funkčnost
+    public function categoryList($category) //get posts by given category
+    { 
+        $posts = Post::where('kategorie_id', $category)->get();
+        return view('post.byCategory', compact('posts'));
     }
 
     public function validateInput($input)

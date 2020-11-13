@@ -11,6 +11,9 @@ class AccountController extends Controller
     public function index() 
     {
         //tu bude index uživatelského profilu (asi nebude potřeba ale zrobit)
+        $user = $this->getUser();
+
+        return view('auth.profile', compact('user'));
     }
 
     public function edit() 
@@ -23,7 +26,7 @@ class AccountController extends Controller
 
         $user = $this->getUser();
 
-        $user->update($request->validate([])); //validace
+        
 
         return redirect('/account');
     }
