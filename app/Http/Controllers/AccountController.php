@@ -8,35 +8,54 @@ use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
-    public function index() 
+    public function index()
     {
-        //tu bude index uživatelského profilu (asi nebude potřeba ale zrobit)
-        $user = $this->getUser();
+        
+        //uživatelský profil zalogovaného uživatele, možnost úpravy přes form, pak to jde na update funkci
+        $user = $this->getUser(); 
 
         return view('auth.profile', compact('user'));
+
     }
 
-    public function edit() 
+    public function show(User $account)
     {
-        //editace uživatelského účtu
+
+        //zobrazení profilu uživatele (veřejně přístupný)
+        return view('auth.userProfile', compact('account'));
+
     }
 
-    public function update(Request $request) 
+    public function update(Request $request)
     {
 
-        $user = $this->getUser();
-
-        
+        $user = User::where('id',$this->getUser()); //čekovat esi funguje
+        $user->update($request); //doplnit
 
         return redirect('/account');
+        
     }
 
-    public function delete(Request $request) {
-        //odstranění účtu
+    public function delete(User $account)
+    {
+        
+        if ($this->getUser() == $account->id) {
+            $account->delete();
+            Auth::logout();
+            return redirect('/');
+        }
+        else
+        {
+            return view('auth.error', compact('account')); //dorobit error page, bude psané že nemůže odstraňovat účet který není jeho
+        }
+
     }
 
-    private function getUser() {
+    private function getUser()
+    {
+
         return Auth::user();
+
     }
 
 }

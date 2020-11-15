@@ -1,0 +1,1 @@
+{{$user->uzivatelske_jmeno}}
