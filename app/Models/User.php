@@ -6,12 +6,15 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
-
-    //upravit pro fungování s databázkou z návrhu (podle ERDPlus)
+    use HasApiTokens;
+    use HasFactory;
+    //use HasProfilePhoto;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -19,9 +22,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'uzivatelske_jmeno',
+        'heslo',
+        'datum_registrace',
+        'jmeno',
+        'prijmeni',
     ];
 
     /**
@@ -30,8 +35,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'heslo',
+        'remember_token'
     ];
 
     /**
@@ -40,10 +45,28 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'datum_registrace' => 'date',
     ];
 
     protected $table = 'uzivatel';
+    public $timestamps = false; //tabulka uzivatel nemá updated_at pole
+    protected $primaryKey = 'ID'; //aby fungoval auth
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'profilove_foto',
+    ];
+
+    /*
+    public function getAuthPassword()
+    {
+        return $this->heslo;
+    }
+    */
 
     public function response() {
         return $this->hasMany(Response::class, 'id', 'uzivatel_id');
