@@ -1,13 +1,40 @@
-<h1>POST {{$post->nazev}}</h1>
-<h4>Added: {{$post->pridano}}</h4>
-<i>Přidal {{$post->User->uzivatelske_jmeno}} do kategorie {{$post->Category->nazev}}</i>
-<p>{{$post->obsah}}</p>
--------------------------------------
-<h2>Odpovědi</h2>
-@forelse ($post->response as $response)
-<i>{{$response->User->uzivatelske_jmeno}} - {{$response->odeslano}}</i>
-<p>{{$response->obsah}}</p>
--------------------------------------<br>
-@empty
-Žádná odpověď k tomuto příspěvku neexistuje
-@endforelse
+@extends('welcome')
+@section('content')
+    <h1 class="prispevek-nadpis"> {{ $post->nazev }} </h1>
+    <h2 class="prispevek-podnadpis">Přidáno: {{ date('d.m.Y h:m', strtotime($post->pridano)) }}</h2>
+    <div class="card bg-light mb-3">
+        <div class="card-header d-flex justify-content-between">
+            <p><i class="fas fa-user"></i> {{ $post->User->uzivatelske_jmeno }}</p>
+            <p><i class="fas fa-folder-open"></i> {{ $post->Category->nazev }}</p>
+        </div>
+        <div class="card-body">
+            <p>{{ $post->obsah }}</p>
+        </div>
+    </div>
+    <h2>Odpovědi</h2>
+    @forelse ($post->response as $response)
+        <div class="card border-warning mb-3">
+            <div class="card-header d-flex justify-content-between">
+                <p><i class="fas fa-user"></i> {{ $response->User->uzivatelske_jmeno }}</p>
+                <p><i class="fas fa-user-clock"></i> {{ $response->odeslano }}</p>
+            </div>
+            <div class="card-body">
+                <p>{{ $response->obsah }}</p>
+            </div>
+        </div>
+    @empty
+        Žádná odpověď k tomuto příspěvku neexistuje
+    @endforelse
+    @auth
+        <h2 id="comment">Komentovat</h2>
+        <form method="POST" action="/posts/{{ $post->ID }}/comment">
+            @csrf
+            <div class="form-group" style="padding-top: 10px">
+                <textarea class="form-control" rows="3" name="content"></textarea>
+                <button type="submit" class="btn btn-primary float-right" style="margin-top: 10px">Odoslať</button>
+            </div>
+        </form>
+
+    @endauth
+    </div>
+@endsection
