@@ -9,6 +9,8 @@ class Post extends Model
 
     protected $fillable = [];
     protected $table = 'prispevek';
+    protected $primaryKey = 'ID';
+    public $timestamps = false;
     
     public function user() {
         return $this->hasOne(User::class, 'ID', 'uzivatel_id');
