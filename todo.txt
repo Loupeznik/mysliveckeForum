@@ -1,5 +1,0 @@
-Zrobit prostý CRUD pro příspěvky, případně užit scaffold pro vkládání příspěvku uživatelem
-
-Livechat jebat
-Multilevelovou autorizaci taky
-Kdyžtak se to doplní pozdějš kdyby se to dalo prodat myslivcům
