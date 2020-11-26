@@ -26,6 +26,8 @@ class CreateNewUser implements CreatesNewUsers
 
         return User::create([
             'uzivatelske_jmeno' => $input['uzivatelske_jmeno'],
+            'jmeno' => $input['jmeno'],
+            'prijmeni' => $input['prijmeni'],
             'datum_registrace' => now(),
             'heslo' => Hash::make($input['password']),
         ]);
