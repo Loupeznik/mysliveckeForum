@@ -1,38 +1,49 @@
-<x-guest-layout>
-    <x-jet-authentication-card>
-        <x-slot name="logo">
-            <x-jet-authentication-card-logo />
-        </x-slot>
+@extends('welcome')
+@section('content')
+    <h3 class="register">Registrácia nového užívateľa</h3>
 
-        <x-jet-validation-errors class="mb-4" />
-
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
-
-            <div>
-                <x-jet-label for="name" value="{{ __('Name') }}" />
-                <x-jet-input id="name" class="block mt-1 w-full" type="text" name="uzivatelske_jmeno" :value="old('name')" required autofocus autocomplete="name" />
+    <p class="register">
+        Povinné údaje sú meno, uživatelské jméno ktorý slúži ako login a heslo. Heslo sa
+        dá po prihlásení zmeniť.
+        Ďalšie osobné údaje vložené pri registrácii slúžia len pre chod tohto diskusného fóra, nie sú poskytované tretím
+        osobám (s vynimkou Polície SR/ČR pri vyšetrovaní podozrení zo spáchania trestného činu alebo priestupku) bez súhlasu
+        jej majiteľa. Je na každom užívateľovi, aby si verejne zobrazované osobné údaje nastavil podľa svojho uváženia.
+        Ďalej odporúčame zadať aj korektné meno, obzvlášť v prípade kritiky a napádania ostatných, slušne a vecne
+        diskutujúcich. K užívateľom bez zadaného mena sa bude pristupovať pri prípadných prehrešeniach prísnejšie.
+        <br><br>
+        <b>Na fórum sa ani neregistrujte, ak máte v úmysle hrubo napádať ostatní diskutujúci, sústavne narušovať témy
+            svojimi mimotématickými príspevky alebo vykonávať inú činnosť narušujúce chod diskusného fóra, pretože po prvých
+            náznakoch tejto činnosti budete z fóra odstránený!</b>
+        <br><br>
+        <b>Registrácia je dokončená až po schválení administrátorom, čo prebehne (väčšinou) do 24 hodín od registrácie.
+            Dovtedy nebude možné sa prihlásiť a vkladať príspevky.</b>
+    </p>
+    <form method="POST" action="/register">
+        @csrf
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputName">Meno</label>
+                <input type="name" name="jmeno" class="form-control" id="inputName">
             </div>
-
-            <div class="mt-4">
-                <x-jet-label for="password" value="{{ __('Password') }}" />
-                <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+            <div class="form-group col-md-6">
+                <label for="inputSurname">Priezvisko</label>
+                <input type="surname" name="prijmeni" class="form-control" id="inputSurname">
             </div>
-
-            <div class="mt-4">
-                <x-jet-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-jet-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+        </div>
+        <div class="form-group">
+            <label for="inputUsername">Uživatelské jméno</label>
+            <input type="text" name="uzivatelske_jmeno" class="form-control" id="inputUsername" required>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputEmail4">Heslo</label>
+                <input type="password" name="password" class="form-control" id="inputPassword4" required>
             </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-jet-button class="ml-4">
-                    {{ __('Register') }}
-                </x-jet-button>
+            <div class="form-group col-md-6">
+                <label for="inputPassword5">Heslo znovu</label>
+                <input type="password" name="password_confirmation" class="form-control" id="inputPassword5" required>
             </div>
-        </form>
-    </x-jet-authentication-card>
-</x-guest-layout>
+        </div>
+        <button type="submit" class="btn btn-primary">Registrovať</button>
+    </form>
+@endsection

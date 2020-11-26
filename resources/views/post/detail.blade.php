@@ -34,7 +34,6 @@
                 <button type="submit" class="btn btn-primary float-right" style="margin-top: 10px">Odoslať</button>
             </div>
         </form>
-
     @endauth
     </div>
 @endsection
