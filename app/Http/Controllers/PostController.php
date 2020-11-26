@@ -76,6 +76,12 @@ class PostController extends Controller
         return view('post.byCategory', compact('posts'));
     }
 
+    public function respond(Request $request, Post $post) {
+        Response::create(['obsah' => $request->content, 'odeslano' => now(), 'prispevek_id' => $post->ID, 'uzivatel_id' => Auth::user()->ID]);
+
+        return redirect('/posts/' . $post->ID);
+    }
+
     public function validateInput($input)
     {
         return $input->validate([]); //validovat input - doplnit vars
