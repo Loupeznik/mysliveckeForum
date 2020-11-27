@@ -19,5 +19,4 @@
             <p>Nie ste registrovaný? Môžete tak urobiť kliknutím <a href="/register">TU!</a></p>
         </div>
     </form>
-    </div>
 @endsection
