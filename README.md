@@ -27,4 +27,5 @@ Projektová dokumentace je k dispozici [zde](https://drive.google.com/file/d/1iY
 
 ## Licence/License
 
-This project is [MIT licensed](https://opensource.org/licenses/MIT).
+Laravel is [MIT licensed](https://opensource.org/licenses/MIT).
+This project is [MPL-2.0 licensed](https://opensource.org/licenses/MPL-2.0)
