@@ -1,5 +1,8 @@
 @extends('welcome')
 @section('content')
+    @auth
+    <a class="btn btn-primary mb-2" href="/posts/create">Vložit příspěvek</a>
+    @endauth
     <div class="card-deck">
         @forelse($posts as $post)
             <div class="card">

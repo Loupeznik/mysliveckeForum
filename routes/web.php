@@ -45,7 +45,8 @@ Route::resource('account','AccountController'); //CRUD pro uživatelské účty
 Route::get('categories/{category}', 'PostController@categoryList');
 Route::post('posts/{post}/comment', 'PostController@respond');
 //Route::get('chat', 'ChatroomController@index');
-Route::resource('chat','ChatroomController');
+Route::resource('chat', 'ChatroomController');
+Route::delete('posts/response/{id}', 'PostController@deleteResponse');
 
 /*
 Route::get('login', 'LoginController@showLoginForm');

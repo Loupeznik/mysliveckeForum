@@ -31,7 +31,13 @@ class PostController extends Controller
     {
         $this->validateInput($request);
 
-        Post::create([]); //validace
+        Post::create([
+            'nazev' => $request->nazev,
+            'obsah' => $request->obsah,
+            'kategorie_id' => $request->kategorie,
+            'uzivatel_id' => Auth::user()->ID,
+            'pridano' => now()
+        ]);
 
         return redirect('/posts');
     }
@@ -70,21 +76,34 @@ class PostController extends Controller
         return view('post.list', compact('posts'));
     }
 
-    public function categoryList($category) //get posts by given category
+    public function categoryList($category)
     { 
         $posts = Post::where('kategorie_id', $category)->get();
         return view('post.byCategory', compact('posts'));
     }
 
-    public function respond(Request $request, Post $post) {
+    public function respond(Request $request, Post $post) 
+    {
         Response::create(['obsah' => $request->content, 'odeslano' => now(), 'prispevek_id' => $post->ID, 'uzivatel_id' => Auth::user()->ID]);
 
         return redirect('/posts/' . $post->ID);
     }
 
+    public function deleteResponse($id)
+    {
+        $response = Response::where('ID', $id)->first();
+        $redirect = $response->prispevek_id;
+        $response->delete();
+
+        return redirect('/posts/' . $redirect);
+    }
+
     public function validateInput($input)
     {
-        return $input->validate([]); //validovat input - doplnit vars
+        return $input->validate([
+            'nazev' => ['required', 'min:10', 'max:150'],
+            'obsah' => ['required', 'min:20', 'max:1000']
+        ]);
     }
 
 }

@@ -7,7 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
 
-    protected $fillable = [];
+    protected $fillable = [
+        'nazev',
+        'obsah',
+        'pridano',
+        'uzivatel_id',
+        'kategorie_id'
+    ];
     protected $table = 'prispevek';
     protected $primaryKey = 'ID';
     public $timestamps = false;
