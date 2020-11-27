@@ -24,7 +24,7 @@ class ChatroomController extends Controller
     public function index()
     {
         //přes Eloquent nefungovalo, bylo nutné použít DB query
-        $rooms = DB::table('chatroom_uzivatel')->join('uzivatel','uzivatel_id', '=', 'uzivatel.ID')->join('chatroom', 'chatroom_id', '=', 'chatroom.ID')->select(['chatroom.nazev', 'chatroom.ID'])->where('uzivatel_id', '=', Auth::user()->ID)->get();
+        $rooms = DB::table('chatroom_uzivatel')->join('uzivatel','uzivatel_id', '=', 'uzivatel.ID')->join('chatroom', 'chatroom_id', '=', 'chatroom.ID')->select('chatroom.*')->where('uzivatel_id', '=', Auth::user()->ID)->get();
         
         return view('chatroom.index', compact('rooms'));
     }
@@ -61,7 +61,11 @@ class ChatroomController extends Controller
      */
     public function show($id)
     {
-        return view('chatroom.chat');
+        if (DB::table('chatroom_uzivatel')->where('chatroom_id', '=', $id)->where('uzivatel_id', '=', Auth::user()->ID)->count() > 0) 
+        {
+            return view('chatroom.chat'); //pokud je uživatel členem místnosti, ukázat místnost, jinak se vrátit na předchozí stránku
+        }
+        return redirect('/chat');
     }
 
     /**
@@ -95,6 +99,9 @@ class ChatroomController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Chatroom::where('ID', $id)->delete();
+        DB::table('chatroom_uzivatel')->where('chatroom_id', '=', $id)->delete();
+
+        return redirect('/chat');
     }
 }
