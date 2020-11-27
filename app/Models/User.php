@@ -72,4 +72,9 @@ class User extends Authenticatable
     public function post() {
         return $this->hasMany(Post::class, 'id', 'uzivatel_id');
     }
+
+    public function chatroom() {
+        return $this->belongsToMany(Chatroom::class, 'chatroom_uzivatel', 'chatroom_id', 'uzivatel_id');
+    }
+
 }

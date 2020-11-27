@@ -18,13 +18,15 @@ Route::get('/', function () {
     return view('pages.home');
 });
 
-Route::get('/home', function() {
-    return view('pages.home');
+Route::get('/home', function () { //for legacy components
+    return redirect('/');
 });
 
+/*
 Route::get('/chat', function() {
     return view('pages.chat');
 });
+*/
 
 Route::get('/stream', function() {
     return view('pages.livestream');
@@ -42,6 +44,8 @@ Route::resource('posts','PostController'); //CRUD pro příspěvky
 Route::resource('account','AccountController'); //CRUD pro uživatelské účty
 Route::get('categories/{category}', 'PostController@categoryList');
 Route::post('posts/{post}/comment', 'PostController@respond');
+//Route::get('chat', 'ChatroomController@index');
+Route::resource('chat','ChatroomController');
 
 /*
 Route::get('login', 'LoginController@showLoginForm');
