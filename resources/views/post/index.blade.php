@@ -1,7 +1,7 @@
 @extends('welcome')
 @section('content')
     @auth
-    <a class="btn btn-primary mb-2" href="/posts/create">Vložit příspěvek</a>
+        <a class="btn btn-primary mb-2" href="/posts/create">Vložit příspěvek</a>
     @endauth
     <div class="card-deck">
         @forelse($posts as $post)
@@ -10,7 +10,8 @@
                 <div class="card-body">
                     <h5 class="card-title"><a href="/posts/{{ $post->ID }}">{{ $post->nazev }}</a> <span
                             class="badge badge-pill badge-primary">Komentáře: {{ $post->response_count }}</span></h5>
-                    <h6 class="card-subtitle mb-2 text-secondary">Přidal <i>{{ $post->User->uzivatelske_jmeno }}</i> v kategorii
+                    <h6 class="card-subtitle mb-2 text-secondary">Přidal <i><a class="text-decoration-none text-dark"
+                                href="/account/{{ $post->User->ID }}">{{ $post->User->uzivatelske_jmeno }}</a></i> v kategorii
                         <i>{{ $post->Category->nazev }}</i>
                     </h6>
                     <p class="card-text">{{ $post->obsah }}

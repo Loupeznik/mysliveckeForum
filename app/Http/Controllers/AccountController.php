@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -16,27 +17,28 @@ class AccountController extends Controller
 
     public function index()
     {
-        
         //uživatelský profil zalogovaného uživatele, možnost úpravy přes form, pak to jde na update funkci
-        $user = $this->getUser(); 
+        $user = $this->getUser();
 
         return view('auth.profile', compact('user'));
-
     }
 
     public function show(User $account)
     {
-
         //zobrazení profilu uživatele (veřejně přístupný)
-        return view('auth.userProfile', compact('account'));
-
+        $authoredPosts = Post::where('uzivatel_id', $account->ID)->withCount('response')->orderBy('pridano', 'desc')->get();
+        return view('auth.userProfile', compact(['account','authoredPosts']));
     }
 
     public function update(Request $request)
     {
 
-        $user = User::where('id',$this->getUser()); //čekovat esi funguje
-        $user->update($request); //doplnit
+        $user = User::where('ID',$this->getUser());
+        $user->update([
+            'jmeno' => $request->jmeno,
+            'prijmeni' => $request->prijmeni,
+            'profilove_foto' => $request->profilove_foto
+        ]);
 
         return redirect('/account');
         
