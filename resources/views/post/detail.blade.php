@@ -48,7 +48,10 @@
         <form method="POST" action="/posts/{{ $post->ID }}/comment">
             @csrf
             <div class="form-group" style="padding-top: 10px">
-                <textarea class="form-control" rows="3" name="content"></textarea>
+                <textarea class="form-control" rows="3" name="content">{{old('obsah')}}</textarea>
+                @error('obsah')
+                    <p class="text-danger">{{$errors->first('obsah')}}</p>
+                @enderror
                 <button type="submit" class="btn btn-primary float-right" style="margin-top: 10px">Odoslať</button>
             </div>
         </form>

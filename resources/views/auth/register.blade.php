@@ -23,25 +23,40 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="inputName">Meno</label>
-                <input type="name" name="jmeno" class="form-control" id="inputName">
+                <input type="name" name="jmeno" class="form-control" id="inputName" value="{{old('jmeno')}}">
+                @error('jmeno')
+                    <p class="text-danger">{{$errors->first('jmeno')}}</p>
+                @enderror
             </div>
             <div class="form-group col-md-6">
                 <label for="inputSurname">Priezvisko</label>
-                <input type="surname" name="prijmeni" class="form-control" id="inputSurname">
+                <input type="surname" name="prijmeni" class="form-control" id="inputSurname" value="{{old('prijmeni')}}">
+                @error('prijmeni')
+                    <p class="text-danger">{{$errors->first('jmeno')}}</p>
+                @enderror
             </div>
         </div>
         <div class="form-group">
             <label for="inputUsername">Uživatelské jméno</label>
-            <input type="text" name="uzivatelske_jmeno" class="form-control" id="inputUsername" required>
+            <input type="text" name="uzivatelske_jmeno" class="form-control" id="inputUsername" value="{{old('uzivatelske_jmeno')}}" required>
+                @error('uzivatelske_jmeno')
+                    <p class="text-danger">{{$errors->first('uzivatelske_jmeno')}}</p>
+                @enderror
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="inputEmail4">Heslo</label>
                 <input type="password" name="password" class="form-control" id="inputPassword4" required>
+                @error('password')
+                    <p class="text-danger">{{$errors->first('password')}}</p>
+                @enderror
             </div>
             <div class="form-group col-md-6">
                 <label for="inputPassword5">Heslo znovu</label>
                 <input type="password" name="password_confirmation" class="form-control" id="inputPassword5" required>
+                @error('password_confirmation')
+                    <p class="text-danger">{{$errors->first('password_confirmation')}}</p>
+                @enderror
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Registrovať</button>
