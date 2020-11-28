@@ -33,7 +33,7 @@ class AccountController extends Controller
     public function update(Request $request)
     {
 
-        $user = User::where('ID',$this->getUser());
+        $user = User::where('id', $this->getUser()->ID);
         $user->update([
             'jmeno' => $request->jmeno,
             'prijmeni' => $request->prijmeni,

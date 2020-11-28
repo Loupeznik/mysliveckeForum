@@ -24,6 +24,7 @@ class User extends Authenticatable
         'datum_registrace',
         'jmeno',
         'prijmeni',
+        'profilove_foto'
     ];
 
     /**
@@ -48,15 +49,6 @@ class User extends Authenticatable
     protected $table = 'uzivatel';
     public $timestamps = false; //tabulka uzivatel nemá updated_at pole
     protected $primaryKey = 'ID'; //aby fungoval auth
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'profilove_foto',
-    ];
 
     /*
     public function getAuthPassword()
