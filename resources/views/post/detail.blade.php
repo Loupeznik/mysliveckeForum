@@ -1,7 +1,7 @@
 @extends('welcome')
 @section('content')
     <h1 class="prispevek-nadpis"> {{ $post->nazev }} </h1>
-    <h2 class="prispevek-podnadpis">Přidáno: {{ date('d.m.Y h:m', strtotime($post->pridano)) }}</h2>
+    <h2 class="prispevek-podnadpis">Přidáno: {{ date('d.m.Y H:i', strtotime($post->pridano)) }}</h2>
     <div class="card bg-light mb-3">
         <div class="card-header d-flex justify-content-between">
             <p><i class="fas fa-user"></i> <a class="text-decoration-none text-dark" href="/account/{{ $post->User->ID }}">{{ $post->User->uzivatelske_jmeno }}</a></p>
@@ -25,7 +25,7 @@
         <div class="card border-warning mb-3">
             <div class="card-header d-flex justify-content-between">
                 <p><i class="fas fa-user"></i> <a class="text-decoration-none text-dark" href="/account/{{ $response->User->ID }}">{{ $response->User->uzivatelske_jmeno }}</a></p>
-                <p><i class="fas fa-user-clock"></i> {{ date('d.m.Y h:m', strtotime($response->odeslano)) }}</p>
+                <p><i class="fas fa-user-clock"></i> {{ date('d.m.Y H:i', strtotime($response->odeslano)) }}</p>
             </div>
             <div class="card-body">
                 <p>{{ $response->obsah }}</p>
