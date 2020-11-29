@@ -1,6 +1,27 @@
 @extends('welcome')
 @section('content')
     <div class="float-left" style="width: 820px">
+        <h1>{{ $chatroom->nazev }}</h1>
+        @if ($chatroom->admin_id == Auth::user()->ID)
+            <div class="mt-3">
+                <form class="align-items-center" method="POST" action="/chatroom">
+                    @csrf
+                    <div class="form-row">
+                        <div class="col">
+                            <select name="uzivatel_id" class="form-control form-control-sm">
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->ID }}">{{ $user->uzivatelske_jmeno }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <input type="hidden" name="redirect" value="{{ $chatroom->ID }}">
+                        <div class="col">
+                            <input type="submit" class="btn btn-success btn-sm" value="Přidat uživatele">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        @endif
         <div class="container">
             <img src="/img/avatar.png" id="chat">
             <p>Čau. Ako sa dnes máš?</p>
@@ -39,18 +60,12 @@
             <button type="submit" class="btn btn-primary float-right" style="margin-top: 10px">Odoslať</button>
         </div>
     </div>
-
     <div class="container float-right" style="width: 110px">
         <h6 style="text-align: center">Zoznam priateľov</h6>
-        <div class="container darker"><a href="#"><img class="zoznam" src="/img/avatar.png" alt="Avatar" id="chat"></a><a
-                style="padding-left: 8px">Dušan</a></div>
-        <div class="container darker"><a href="#"><img src="/img/avatar.png" alt="Avatar" id="chat"></a><a
-                style="padding-left: 2px"> Dominik </a></div>
-        <div class="container darker"><a href="#"><img src="/img/avatar.png" alt="Avatar" id="chat"></a><a
-                style="padding-left: 4px"> Vojtěch </a></div>
-        <div class="container darker"><a href="#"><img src="/img/avatar.png" alt="Avatar" id="chat"></a><a
-                style="padding-left: 5px"> Jerguš </a></div>
-        <div class="container darker"><a href="#"><img src="/img/avatar.png" alt="Avatar" id="chat"></a><a
-                style="padding-left: 8px"> Pavel </a></div>
+        @foreach ($members as $member)
+            <div class="container darker"><img class="zoznam" src="/img/avatar.png" alt="Avatar" id="chat"><a
+                    href="/account/{{ $member->uzivatel_id }}" class="text-decoration-none @if ($chatroom->admin_id == $member->uzivatel_id) font-weight-bold text-dark @else text-secondary @endif"
+                    style="padding-left: 8px">{{ $member->uzivatelske_jmeno }}</a></div>
+        @endforeach
     </div>
 @endsection

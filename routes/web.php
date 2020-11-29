@@ -47,6 +47,7 @@ Route::post('posts/{post}/comment', 'PostController@respond');
 //Route::get('chat', 'ChatroomController@index');
 Route::resource('chat', 'ChatroomController');
 Route::delete('posts/response/{id}', 'PostController@deleteResponse');
+Route::post('chatroom', 'ChatroomController@addMember');
 
 /*
 Route::get('login', 'LoginController@showLoginForm');

@@ -63,7 +63,10 @@ class ChatroomController extends Controller
     {
         if (DB::table('chatroom_uzivatel')->where('chatroom_id', '=', $id)->where('uzivatel_id', '=', Auth::user()->ID)->count() > 0) 
         {
-            return view('chatroom.chat'); //pokud je uživatel členem místnosti, ukázat místnost, jinak se vrátit na předchozí stránku
+            $users = User::all();
+            $chatroom = Chatroom::where('ID', $id)->first();
+            $members = DB::table('chatroom_uzivatel')->join('uzivatel','uzivatel_id', '=', 'uzivatel.ID')->where('chatroom_id', '=', $id)->select(['uzivatel_id', 'uzivatelske_jmeno'])->get();
+            return view('chatroom.chat', compact(['members', 'users', 'chatroom'])); //pokud je uživatel členem místnosti, ukázat místnost, jinak se vrátit na předchozí stránku
         }
         return redirect('/chat');
     }
@@ -104,4 +107,12 @@ class ChatroomController extends Controller
 
         return redirect('/chat');
     }
+
+    public function addMember(Request $request)
+    {
+        DB::table('chatroom_uzivatel')->insert(['uzivatel_id' => $request->uzivatel_id, 'chatroom_id' => $request->redirect]);
+
+        return redirect('/chat/'. $request->redirect);
+    }
+    
 }
