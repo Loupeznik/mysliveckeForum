@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Chatroom;
 use App\Models\User;
+use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -65,8 +66,9 @@ class ChatroomController extends Controller
         {
             $users = User::all();
             $chatroom = Chatroom::where('ID', $id)->first();
+            $messages = Message::where('chatroom_id', $id)->get();
             $members = DB::table('chatroom_uzivatel')->join('uzivatel','uzivatel_id', '=', 'uzivatel.ID')->where('chatroom_id', '=', $id)->select(['uzivatel_id', 'uzivatelske_jmeno'])->get();
-            return view('chatroom.chat', compact(['members', 'users', 'chatroom'])); //pokud je uživatel členem místnosti, ukázat místnost, jinak se vrátit na předchozí stránku
+            return view('chatroom.chat', compact(['members', 'users', 'chatroom', 'messages'])); //pokud je uživatel členem místnosti, ukázat místnost, jinak se vrátit na předchozí stránku
         }
         return redirect('/chat');
     }
@@ -110,9 +112,9 @@ class ChatroomController extends Controller
 
     public function addMember(Request $request)
     {
-        DB::table('chatroom_uzivatel')->insert(['uzivatel_id' => $request->uzivatel_id, 'chatroom_id' => $request->redirect]);
+        if ($request->uzivatel_id != 0) DB::table('chatroom_uzivatel')->insert(['uzivatel_id' => $request->uzivatel_id, 'chatroom_id' => $request->redirect]);
 
         return redirect('/chat/'. $request->redirect);
     }
-    
+
 }

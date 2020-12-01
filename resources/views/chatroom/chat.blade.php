@@ -9,8 +9,13 @@
                     <div class="form-row">
                         <div class="col">
                             <select name="uzivatel_id" class="form-control form-control-sm">
+                                <option value="0">Vyberte uživatele k přidání</option>
                                 @foreach ($users as $user)
+                                    @if ($members->contains('uzivatel_id', $user->ID))
+                                        @continue
+                                    @else
                                     <option value="{{ $user->ID }}">{{ $user->uzivatelske_jmeno }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -22,43 +27,26 @@
                 </form>
             </div>
         @endif
-        <div class="container">
-            <img src="/img/avatar.png" id="chat">
-            <p>Čau. Ako sa dnes máš?</p>
-            <span style="padding-left: 5px">Dušan</span>
-            <span class="time-right">11:00 ✓</span>
+        @forelse ($messages as $message)
+        <div class="container @if ($message->uzivatel_id == Auth::user()->ID) darker @endif">
+            <img src="/img/avatar.png" id="chat" @if ($message->uzivatel_id == Auth::user()->ID) class="right" @endif>
+            <p>{{ $message->obsah }}</p>
+            @if ($message->uzivatel_id != Auth::user()->ID)
+            <span style="padding-left: 5px">{{ $message->User->uzivatelske_jmeno }}</span>
+            @endif
+        <span class="time-right">{{ date('d.m.Y H:i', strtotime($message->odeslano)) }}</span>
         </div>
-
-        <div class="container darker">
-            <img src="/img/avatar.png" alt="Avatar" class="right" id="chat">
-            <p>Ahoj. Hele jde to co ty?</p>
-            <span class="time-left">11:01 ○</span>
+        @empty
+        <div class="container border-danger text-center">
+            <p class="text-danger">Místnost neobsahuje žádné zprávy</p>
         </div>
-
-        <div class="container">
-            <img src="/img/avatar.png" alt="Avatar" id="chat">
-            <p>Tiež fajn. Ako sa darí v love, už sme si dlho nepísali.</p>
-            <span style="padding-left: 5px">Dušan</span>
-            <span class="time-right">11:02 ✓</span>
-        </div>
-
-        <div class="container darker">
-            <img src="/img/avatar.png" alt="Avatar" class="right" id="chat">
-            <p>Jo, minulou sobotu sme s Frantou střelili jelena. Mrkni se naň v galerii.</p>
-            <span class="time-left">11:05 ○</span>
-        </div>
-
-        <div class="container">
-            <img src="/img/avatar.png" alt="Avatar" id="chat">
-            <p>Jasné mrknem sa na to.</p>
-            <span style="padding-left: 5px">Dušan</span>
-            <span class="time-right">11:06 ✓</span>
-        </div>
-
+        @endforelse
+        @if ($messages->isNotEmpty())
         <div class="form-group" style="padding-top: 10px">
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            <button type="submit" class="btn btn-primary float-right" style="margin-top: 10px">Odoslať</button>
+            <button type="submit" class="btn btn-primary float-right" style="margin-top: 10px" disabled>Odoslať</button>
         </div>
+        @endif
     </div>
     <div class="container float-right" style="width: 110px">
         <h6 style="text-align: center">Zoznam priateľov</h6>
